@@ -1,9 +1,8 @@
 /**
- * Demo for 02 - Blinky
- *
- * Toggles the LED on and off in its own task/thread.
+ * Solution to 02 - Blinky Challenge
+ * 
+ * Toggles LED at different rates using separate tasks.
  */
-
 
 // Include FreeRTOS for delay and task functionality
 #include <freertos/FreeRTOS.h>
@@ -18,17 +17,29 @@ static const BaseType_t app_cpu = 0;
 static const BaseType_t app_cpu = 1;
 #endif
 
-#define LED_PIN 5 // LED connected to GPIO5 (On-board LED)
+#define LED_PIN 5 // LED connected to GPIO5 (On-board LED) which is active low
 
-// Our task: blink an LED
-void toggleLED(void *parameter)
+// Task 1: blink an LED every 1000ms
+void toggleLED1(void *parameter)
 {
   while (1)
   {
-    gpio_set_level(LED_PIN, 1);
-    vTaskDelay(500 / portTICK_RATE_MS);
     gpio_set_level(LED_PIN, 0);
-    vTaskDelay(500 / portTICK_RATE_MS);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    gpio_set_level(LED_PIN, 1);
+    vTaskDelay(950 / portTICK_RATE_MS);
+  }
+}
+
+// Task 2: blink an LED every 700ms
+void toggleLED2(void *parameter)
+{
+  while (1)
+  {
+    gpio_set_level(LED_PIN, 0);
+    vTaskDelay(50 / portTICK_RATE_MS);
+    gpio_set_level(LED_PIN, 1);
+    vTaskDelay(650 / portTICK_RATE_MS);
   }
 }
 
@@ -45,8 +56,18 @@ int app_main()
 
   // Task to run forever
   xTaskCreatePinnedToCore( // Use xTaskCreate() in vanilla FreeRTOS
-      toggleLED,           // Function to be called
-      "Toggle LED",        // Name of task
+      toggleLED1,          // Function to be called
+      "Toggle LED 1",      // Name of task
+      1024,                // Stack size (bytes in ESP32, words in FreeRTOS)
+      NULL,                // Parameter to pass to function
+      1,                   // Task priority (0 to configMAX_PRIORITIES - 1)
+      NULL,                // Task handle
+      app_cpu);            // Run on one core for demo purposes (ESP32 only)
+
+  // Task to run forever
+  xTaskCreatePinnedToCore( // Use xTaskCreate() in vanilla FreeRTOS
+      toggleLED2,          // Function to be called
+      "Toggle LED 2",      // Name of task
       1024,                // Stack size (bytes in ESP32, words in FreeRTOS)
       NULL,                // Parameter to pass to function
       1,                   // Task priority (0 to configMAX_PRIORITIES - 1)
