@@ -1,3 +1,6 @@
 {
-    "cmake.configureOnOpen": false
+    "files.associations": {
+        "*.ipp": "c",
+        "freertos.h": "c"
+    }
 }
