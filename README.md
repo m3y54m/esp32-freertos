@@ -28,3 +28,6 @@ Add a small delay (10ms) to infinite loops to prevent `Task watchdog got trigger
 
 - [Introduction to RTOS (YouTube)](https://www.youtube.com/watch?v=F321087yYy4&list=PLEBQazB0HUyQ4hAPU1cJED6t3DU0h34bz)
 - [Introduction to RTOS (GitHub)](https://github.com/ShawnHymel/introduction-to-rtos)
+- [Watchdogs](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/wdts.html)
+- [Universal Asynchronous Receiver/Transmitter (UART)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/uart.html)
+- [UART Echo Example](https://github.com/espressif/esp-idf/tree/master/examples/peripherals/uart/uart_echo)

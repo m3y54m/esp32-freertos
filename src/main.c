@@ -1,75 +1,59 @@
 /**
- * Solution to 02 - Blinky Challenge
+ * Hello World!
  *
- * Toggles LED at different rates using separate tasks.
+ * Prints "Hello, World" to console
  */
 
 // Include FreeRTOS for delay and task functionality
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-// Include the GPIO driver for the LED
-#include <driver/gpio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+// Include UART driver
+#include "driver/uart.h"
+// For strlen()
+#include <string.h>
 
 // Use only core 0 for demo purposes
 // CONFIG_FREERTOS_UNICORE=y
 
-#define LED_PIN 5 // LED connected to GPIO5 (On-board LED) which is active low
+// Setup UART buffered IO with event queue
+#define BUF_SIZE (1024)
 
-// Task 1: blink an LED every 1000ms
-void toggleLED1(void *parameter)
+// Our task: print Hello, World!
+void printHelloWorld(void *parameter)
 {
+  // Write data to UART.
+  char *test_str = "Hello, World!\n";
+  uart_write_bytes(UART_NUM_0, (const char *)test_str, strlen(test_str));
+
   while (1)
   {
-    gpio_set_level(LED_PIN, 0);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    gpio_set_level(LED_PIN, 1);
-    vTaskDelay(950 / portTICK_RATE_MS);
-  }
-}
-
-// Task 2: blink an LED every 700ms
-void toggleLED2(void *parameter)
-{
-  while (1)
-  {
-    gpio_set_level(LED_PIN, 0);
-    vTaskDelay(50 / portTICK_RATE_MS);
-    gpio_set_level(LED_PIN, 1);
-    vTaskDelay(650 / portTICK_RATE_MS);
+    vTaskDelay(10 / portTICK_RATE_MS);
   }
 }
 
 void app_main()
 {
-  // Configure pin
-  gpio_config_t io_conf;
-  io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
-  io_conf.mode = GPIO_MODE_OUTPUT;
-  io_conf.pin_bit_mask = (1ULL << LED_PIN);
-  io_conf.pull_down_en = 0;
-  io_conf.pull_up_en = 0;
-  gpio_config(&io_conf);
+  // Create UART0 configuration variable
+  uart_config_t uart_config = {
+      .baud_rate = 115200,
+      .data_bits = UART_DATA_8_BITS,
+      .parity = UART_PARITY_DISABLE,
+      .stop_bits = UART_STOP_BITS_1,
+      .flow_ctrl = UART_HW_FLOWCTRL_DISABLE};
+  // Configure UART0
+  uart_param_config(UART_NUM_0, &uart_config);
+  // Set UART0 pins (using UART0 default pins ie no changes)
+  uart_set_pin(UART_NUM_0, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+  // Install UART driver
+  uart_driver_install(UART_NUM_0, BUF_SIZE * 2, 0, 0, NULL, 0);
 
   // Task to run forever
   xTaskCreate(
-      toggleLED1,          // Function to be called
-      "Toggle LED 1",      // Name of task
+      printHelloWorld,     // Function to be called
+      "Print Hello World", // Name of task
       1024,                // Stack size (bytes in ESP32, words in FreeRTOS)
       NULL,                // Parameter to pass to function
       1,                   // Task priority (0 to configMAX_PRIORITIES - 1)
       NULL                 // Task handle
   );
-
-  // Task to run forever
-  xTaskCreate(
-      toggleLED2,          // Function to be called
-      "Toggle LED 2",      // Name of task
-      1024,                // Stack size (bytes in ESP32, words in FreeRTOS)
-      NULL,                // Parameter to pass to function
-      1,                   // Task priority (0 to configMAX_PRIORITIES - 1)
-      NULL                 // Task handle
-  );
-
-  // If this was vanilla FreeRTOS, you'd want to call vTaskStartScheduler() in
-  // main after setting up your tasks.
 }
