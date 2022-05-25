@@ -11,6 +11,7 @@
 #include "driver/uart.h"
 // For strlen()
 #include <string.h>
+#include <stdio.h>
 
 // Use only core 0 for demo purposes
 // CONFIG_FREERTOS_UNICORE=y
@@ -18,16 +19,27 @@
 // Setup UART buffered IO with event queue
 #define BUF_SIZE (1024)
 
+void print_to_uart0(const char *str)
+{
+  uart_write_bytes(UART_NUM_0, str, strlen(str));
+}
+
 // Our task: print Hello, World!
 void printHelloWorld(void *parameter)
 {
-  // Write data to UART.
-  char *test_str = "Hello, World!\n";
-  uart_write_bytes(UART_NUM_0, (const char *)test_str, strlen(test_str));
+  int a = 0;
 
   while (1)
   {
-    vTaskDelay(10 / portTICK_RATE_MS);
+    a++;
+
+    char str[128];
+    sprintf(str, "Hello, World! %d\n", a);
+
+    // Write data to UART.
+    print_to_uart0(str);
+
+    vTaskDelay(1000 / portTICK_RATE_MS);
   }
 }
 
