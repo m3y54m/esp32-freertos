@@ -1,6 +1,6 @@
 /**
  * Solution to 02 - Blinky Challenge
- * 
+ *
  * Toggles LED at different rates using separate tasks.
  */
 
@@ -10,12 +10,8 @@
 // Include the GPIO driver for the LED
 #include <driver/gpio.h>
 
-// Use only core 1 for demo purposes
-#if CONFIG_FREERTOS_UNICORE
-static const BaseType_t app_cpu = 0;
-#else
-static const BaseType_t app_cpu = 1;
-#endif
+// Use only core 0 for demo purposes
+// CONFIG_FREERTOS_UNICORE=y
 
 #define LED_PIN 5 // LED connected to GPIO5 (On-board LED) which is active low
 
@@ -43,7 +39,7 @@ void toggleLED2(void *parameter)
   }
 }
 
-int app_main()
+void app_main()
 {
   // Configure pin
   gpio_config_t io_conf;
@@ -55,31 +51,25 @@ int app_main()
   gpio_config(&io_conf);
 
   // Task to run forever
-  xTaskCreatePinnedToCore( // Use xTaskCreate() in vanilla FreeRTOS
+  xTaskCreate(
       toggleLED1,          // Function to be called
       "Toggle LED 1",      // Name of task
       1024,                // Stack size (bytes in ESP32, words in FreeRTOS)
       NULL,                // Parameter to pass to function
       1,                   // Task priority (0 to configMAX_PRIORITIES - 1)
-      NULL,                // Task handle
-      app_cpu);            // Run on one core for demo purposes (ESP32 only)
+      NULL                 // Task handle
+  );
 
   // Task to run forever
-  xTaskCreatePinnedToCore( // Use xTaskCreate() in vanilla FreeRTOS
+  xTaskCreate(
       toggleLED2,          // Function to be called
       "Toggle LED 2",      // Name of task
       1024,                // Stack size (bytes in ESP32, words in FreeRTOS)
       NULL,                // Parameter to pass to function
       1,                   // Task priority (0 to configMAX_PRIORITIES - 1)
-      NULL,                // Task handle
-      app_cpu);            // Run on one core for demo purposes (ESP32 only)
+      NULL                 // Task handle
+  );
 
   // If this was vanilla FreeRTOS, you'd want to call vTaskStartScheduler() in
   // main after setting up your tasks.
-
-  // Main loop
-  while (1)
-  {
-    // Do nothing
-  }
 }

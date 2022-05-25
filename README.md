@@ -7,6 +7,17 @@ Create a new project using PlatformIO with the following settings:
 - Board: WeMos LOLIN32
 - Framework: ESP-IDF (Espressif IoT Development Framework)
 
+## Notes
+
+### Use only core 0 for demo purposes
+
+Set `CONFIG_FREERTOS_UNICORE=y` in `sdkconfig.lolin32` to use only core 0 for demo purposes.
+
+### Prevent `Task watchdog got triggered` warning
+
+Add a small delay (10ms) to infinite loops to prevent `Task watchdog got triggered` warning.
+
+- [Task watchdog got triggered - it is fixed with a vTaskDelay of 10ms but is this a bug? (IDFGH-5818) #1646](https://github.com/espressif/esp-idf/issues/1646)
 
 ## Board Pinout
 
