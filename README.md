@@ -2,7 +2,7 @@
 
 ## Project Configuration
 
-Based on ["ESP32 - Getting Started with ESP-IDF using Visual Studio Code [Easiest Method"]](https://www.youtube.com/watch?v=5IuZ-E8Tmhg) and ["ESP32 - How to create your First ESP IDF project (From Scratch)"](https://www.youtube.com/watch?v=oHHOCdmLiII).
+Based on ["ESP32 - Getting Started with ESP-IDF using Visual Studio Code [Easiest Method]"](https://www.youtube.com/watch?v=5IuZ-E8Tmhg) and ["ESP32 - How to create your First ESP IDF project (From Scratch)"](https://www.youtube.com/watch?v=oHHOCdmLiII).
 
 ### Step 1: Download and Install VSCode
 
@@ -40,6 +40,8 @@ Add ESP-IDF Terminal parameters for Windows:
 	}
 }
 ```
+
+["QUICK FIX for IDF Terminal inside VS CODE"](https://www.youtube.com/watch?v=N93RvZz6dEc)
 
 ### Step 4: Create a Blank Project Using `idf.py`
 
@@ -101,6 +103,17 @@ idf.py fullclean
 idf.py flash -p COM1 -b 921600 monitor
 ```
 
+### Step 11: Debug
+
+Based on ["ESP32 - DEBUGGING your ESP-IDF code using JTAG [VS CODE]"](https://www.youtube.com/watch?v=uq93H7T7cOQ)
+
+#### OpenOCD
+
+Start OpenOCD GDB server on port 3333.
+
+```bash
+openocd -f interface/jlink.cfg -f board/esp-wroom-32.cfg -c "set ESP32_FLASH_VOLTAGE 3.3"  -c "set ESP_RTOS none" -c "adapter speed 1000"
+```
 
 ## Board Pinout
 

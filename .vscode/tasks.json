@@ -1,0 +1,14 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "startOpenOCD",
+            "type": "shell",
+            "windows": {
+                "command": "clear & start openocd -f interface/jlink.cfg -f board/esp-wroom-32.cfg -c \"set ESP32_FLASH_VOLTAGE 3.3\"  -c \"set ESP_RTOS none\" -c \"adapter speed 1000\" & exit"
+            },
+        }
+    ]
+}
