@@ -81,9 +81,7 @@ idf.py build
 
 ### Step 7: Flash
 
-```bash
 idf.py flash -p COM1
-```
 
 ### Step 8: Monitor
 
@@ -96,6 +94,13 @@ idf.py monitor -p COM1
 ```bash
 idf.py fullclean
 ```
+
+### Step 10: Run (Build, Flash, and Monitor)
+
+```bash
+idf.py flash -p COM1 -b 921600 monitor
+```
+
 
 ## Board Pinout
 

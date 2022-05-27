@@ -19,8 +19,8 @@ void app_main(void)
   while (1)
   {
     gpio_set_level(led_pin, 0);
-    vTaskDelay(500 / portTICK_RATE_MS);
+    vTaskDelay(100 / portTICK_RATE_MS);
     gpio_set_level(led_pin, 1);
-    vTaskDelay(500 / portTICK_RATE_MS);
+    vTaskDelay(900 / portTICK_RATE_MS);
   }
 }
