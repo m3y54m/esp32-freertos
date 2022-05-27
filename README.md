@@ -41,6 +41,12 @@ Add ESP-IDF Terminal parameters for Windows:
 }
 ```
 
+### Step 4: Create a Blank Project Using `idf.py`
+
+```bash
+idf.py create-project blank_poject
+```
+
 ## Board Pinout
 
 WeMos LOLIN32 V1.0
