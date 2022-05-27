@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"terminal.integrated.shell.windows": "cmd.exe",
+		"terminal.integrated.shellArgs.windows": [
+			"/k",
+			"C:/Espressif/frameworks/esp-idf-v4.4/export.bat"
+		],
+	}
+}
