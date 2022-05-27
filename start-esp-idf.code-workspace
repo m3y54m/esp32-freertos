@@ -5,10 +5,15 @@
 		}
 	],
 	"settings": {
+		"terminal.integrated.tabs.title": "ESP-IDF Terminal",
+		"terminal.integrated.env.windows": {
+			"IDF_TOOLS_PATH": "C:\\Espressif",
+			"PATH": "C:\\Espressif\\python_env\\idf4.4_py3.8_env\\Scripts;${env:PATH}"
+		},
 		"terminal.integrated.shell.windows": "cmd.exe",
 		"terminal.integrated.shellArgs.windows": [
 			"/k",
-			"C:/Espressif/frameworks/esp-idf-v4.4/export.bat"
+			"C:\\Espressif\\frameworks\\esp-idf-v4.4\\export.bat"
 		],
 	}
 }
