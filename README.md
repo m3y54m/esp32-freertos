@@ -47,6 +47,56 @@ Add ESP-IDF Terminal parameters for Windows:
 idf.py create-project blank_poject
 ```
 
+### Step 5: Configure the Project using `menuconfig`
+
+It is important to add `start` keyword before `idf.py menuconfig` to open it in a new window. Otherwise, it will open in the VSCode terminal and up/down arrow keys will not work.
+
+```bash
+start idf.py menuconfig
+```
+
+#### Set Clock Speed
+
+`Component Config > ESP32-specific > CPU frequency > 240MHz`
+
+#### Set Flash Memory Size
+
+According to LOLIN32 board, the flash size is 4MBytes.
+
+`Serial flasher config > Flash size > 4MB`
+
+#### Save Setting
+
+After saving the `menuconfig` settings, two files will be created: `sdkconfig` and `sdkconfig.old`.
+Also a `build` folder will be created for project build outputs. Put the `build` folder in the `.gitignore` file.
+
+### Step 6: Build the Project
+
+Note: According to the contents of `$ENV{IDF_PATH}/tools/cmake/project.cmake` the name of the directory containing source files
+should be `main`.
+
+```bash
+idf.py build
+```
+
+### Step 7: Flash
+
+```bash
+idf.py flash -p COM1
+```
+
+### Step 8: Monitor
+
+```bash
+idf.py monitor -p COM1
+```
+
+### Step 9: Clean the Build Directory
+
+```bash
+idf.py fullclean
+```
+
 ## Board Pinout
 
 WeMos LOLIN32 V1.0
