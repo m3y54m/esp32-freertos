@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "*.ipp": "c",
-        "freertos.h": "c"
-    }
-}
